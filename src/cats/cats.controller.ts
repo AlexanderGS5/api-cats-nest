@@ -1,0 +1,34 @@
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common';
+import { CatsService } from './cats.service';
+import { CreateCatDto } from './dto/create-cat.dto';
+import { UpdateCatDto } from './dto/update-cat.dto';
+
+@Controller('cats')
+export class CatsController {
+  constructor(private readonly catsService: CatsService) {}
+
+  @Get()
+  obtenerTodos() {
+    return this.catsService.findAll();
+  }
+
+  @Get(':id')
+  obtenerUno(@Param('id', ParseIntPipe) id: number) {
+    return this.catsService.findOne(id);
+  }
+
+  @Post()
+  crear(@Body() createCatDto: CreateCatDto) {
+    return this.catsService.create(createCatDto);
+  }
+
+  @Patch(':id')
+  actualizar(@Param('id', ParseIntPipe) id: number, @Body() updateCatDto: UpdateCatDto) {
+    return this.catsService.update(id, updateCatDto);
+  }
+
+  @Delete(':id')
+  eliminar(@Param('id', ParseIntPipe) id: number) {
+    return this.catsService.remove(id);
+  }
+}
